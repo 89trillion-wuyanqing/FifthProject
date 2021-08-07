@@ -1,0 +1,12 @@
+syntax = "proto3";
+option go_package="./;model";
+package response;
+
+// 通用消息
+message GeneralReward {
+
+  string msg = 1;//消息
+  int32 type=2;//类型  1-talk消息  2-ping/pong  3-exit消息 4-登陆 5-userlist消息
+  string username=3;//发送者
+  string ext = 4; // 扩展字段，IAP使用
+}
