@@ -10,25 +10,31 @@
 │   └── ws
 │       └── wsServer.go
 ├── config
+│   ├── app.ini
 │   └── serverLog.log
 ├── go.mod
 ├── go.sum
 ├── internal
 │   ├── ctrl
 │   │   └── wsController.go
-│   ├── handler
-│   │   ├── client.go
-│   │   └── server.go
 │   ├── model
 │   │   ├── GeneralReward.pb.go
 │   │   └── GeneralReward.proto
 │   ├── router
 │   │   └── WsRouter.go
-│   └── utils
-│       ├── LogUtils.go
-│       └── WsUtils.go
-└── locust
-    └── LocustFile.py
+│   ├── service
+│   │   └── WsService.go
+│   ├── utils
+│   │   ├── IniUtils.go
+│   │   ├── LogUtils.go
+│   │   └── WsUtils.go
+│   └── ws
+│       ├── client.go
+│       └── server.go
+├── locust
+│   ├── LocustFile.py
+│   └── report_1628339791.0142221.html
+└── readme.md
 ```
 
 
@@ -37,13 +43,14 @@
 
 | 层        | 文件夹              | 主要职责                             | 调用关系                  | 其他说明         |
 | --------- | ------------------- | ------------------------------------ | ------------------------- | ---------------- |
-| 应用层    | /app/ws/wsServer.go | 进程启动，server初始化               | 调用路由层                | 不可同层相互调用 |
+| 应用层    | /app/ws/wsServer.go | 进程启动，server初始化,监听websocket | 调用路由层                | 不可同层相互调用 |
 | 路由层    | /internal/router    | 路由转发，http的path                 | 调用控制层，被应用层调用  | 不可同层相互调用 |
 | 控制层    | /internal/ctrl      | 请求参数验证、处理请求后构造回复消息 | 调用handler，被路由层调用 | 不可同层相互调用 |
-| handler层 | /internal/handler   | 处理具体业务逻辑                     | 调用模型层，被控制层调用  | 不可同层相互调用 |
+| service层 | /internal/service   | 通用业务                             | 调用模型层，被控制层调用  | 不可同层相互调用 |
 | 模型层    | /internal/model     | 数据模型                             | 被业务逻辑层调用          | 不可同层相互调用 |
 | 工具层    | /internal/utils     | 工具层                               | 被各层调用                | 不可同层相互调用 |
-| 配置层    | /config             | 配置层                               | 放置配置文件和日志        |                  |
+| 配置层    | /config             | 放置配置文件和日志                   |                           |                  |
+| WS层      | /internal/ws        | 处理ws事件，管理ws连接，接收和发送   | 被各层调用                |                  |
 
 ## 4.存储设计
 
@@ -87,7 +94,7 @@
 
 #### 请求路径
 
-Ws://127.0.0.1:8011/ws
+Ws://127.0.0.1:8001/ws
 
 #### 请求参数
 

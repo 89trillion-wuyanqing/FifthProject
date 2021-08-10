@@ -1,8 +1,9 @@
 package ws
 
 import (
-	"FifthProject/internal/handler"
 	"FifthProject/internal/router"
+	"FifthProject/internal/utils"
+	"FifthProject/internal/ws"
 	"net/http"
 )
 
@@ -17,12 +18,13 @@ func WsInit() {
 	}*/
 
 	//开一个goroutine执行开始程序
-	go handler.Manager.Start()
+	go ws.Manager.Start()
 
 	router.WsRouter()
 
 	//注册默认路由为 /ws ，并使用wsHandler这个方法
 	//http.HandleFunc("/ws", wsHandler)
 	//监听本地的8011端口
-	http.ListenAndServe(":8011", nil)
+	wsPort := utils.GetVal("server", "WsPort")
+	http.ListenAndServe(":"+wsPort, nil)
 }
