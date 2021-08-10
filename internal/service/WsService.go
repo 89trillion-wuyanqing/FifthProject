@@ -2,7 +2,6 @@ package service
 
 import (
 	"FifthProject/internal/ws"
-	"fmt"
 )
 
 /**
@@ -24,13 +23,13 @@ func NewUserRegister(client *ws.Client) {
 
 	//注册一个新的链接
 	ws.Manager.Register <- client
-	fmt.Println("11111")
+	//fmt.Println("11111")
 	//广播
 	//ws.Manager.Broadcast <- jsonSTr
-	fmt.Println("22222")
+	//fmt.Println("22222")
 	//启动协程收web端传过来的消息
 	go client.Read()
 	//启动协程把消息返回给web端
 	go client.Write()
-	fmt.Println("33333")
+	//fmt.Println("33333")
 }

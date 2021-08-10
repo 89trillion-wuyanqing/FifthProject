@@ -28,7 +28,7 @@ func (c *Client) Read() {
 		fmt.Println("读方法中 ，我要关闭了")
 		log.Println("INFO:" + c.Username + "连接关闭，进行注销")
 		Manager.Unregister <- c
-		//c.Socket.Close()
+
 	}()
 
 	for {
@@ -42,12 +42,11 @@ func (c *Client) Read() {
 			fmt.Println("有错误，进行注销，关闭连接")
 			log.Println("ERROR:读取用户为" + c.Username + "的消息时出错，注销该连接")
 			Manager.Unregister <- c
-			//c.Socket.Close()
+
 			break
 		}
 		//如果没有错误信息就把信息放入broadcast
-		//jsonMessage, _ := proto.Marshal(&model.GeneralReward{Msg: string(message),Type: 1})
-		//var generalMsg = &model.GeneralReward{}
+
 		var generalMsg = &model.GeneralReward{}
 		e := proto.Unmarshal(message, generalMsg)
 		if e != nil {
@@ -59,7 +58,7 @@ func (c *Client) Read() {
 		if generalMsg.Type == 2 {
 
 			jsonSTr, _ := proto.Marshal(&model.GeneralReward{Msg: "Pong", Type: 2, Username: c.Username})
-			//fmt.Println("收到ping消息："+string(jsonSTr)+"发送pong")
+
 			c.Send <- jsonSTr
 			continue
 		}
@@ -68,13 +67,11 @@ func (c *Client) Read() {
 			fmt.Println(generalMsg.Username + "关闭连接：")
 			log.Println("INFO:用户" + c.Username + "发送退出消息，注销该连接")
 			Manager.Unregister <- c
-			//close(c.Send)
-			//delete(Manager.Clients, c)
+
 			continue
 		}
 
 		if generalMsg.Type == 5 {
-			//fmt.Println("接收到list消息，并转发")
 
 			labelStr := ""
 			for k, v := range Manager.Clients {
@@ -87,12 +84,7 @@ func (c *Client) Read() {
 			reward := &model.GeneralReward{Msg: labelStr, Username: c.Username, Type: 5}
 			jsonSTr, _ := proto.Marshal(reward)
 			c.Send <- jsonSTr
-			/*select {
-			case c.Send <- jsonSTr:
-			default:
-				close(c.Send)
-				delete(Manager.Clients, c)
-			}*/
+
 			continue
 		}
 
@@ -106,21 +98,11 @@ func (c *Client) Write() {
 		Manager.Unregister <- c
 		fmt.Println("写方法中 ，我要关闭了")
 		log.Println("INFO:用户为" + c.Username + "的连接关闭注销")
-		//c.Socket.Close()
+
 	}()
 
 	for {
 
-		/*select {
-		case message,_:= <- c.Send:
-			err :=c.Socket.WriteMessage(websocket.TextMessage, message)
-			if (err != nil){
-				log.Println(err.Error())
-				Manager.Unregister <- c
-
-				return
-			}
-		}*/
 		select {
 
 		//从send里读消息
@@ -128,8 +110,6 @@ func (c *Client) Write() {
 			//如果没有消息
 			if !ok {
 
-				/*c.Socket.WriteMessage(websocket.CloseMessage, []byte{
-				})*/
 				break
 			}
 			//有消息就写入，发送给web端

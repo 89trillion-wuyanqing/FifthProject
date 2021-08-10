@@ -10,15 +10,11 @@ import (
 )
 
 func WsCtrl(res http.ResponseWriter, req *http.Request) {
-	//req.ParseForm()
-	//uid:=req.Form["username"][0]      // 从请求里获取用户id
+	// 从请求里获取用户name
 	username := req.Header.Get("username")
 	fmt.Println(username + "用户连接")
 	log.Println("INFO:" + username + "用户连接")
 	//将http协议升级成websocket协议
-	/*conn, err := (&websocket.Upgrader{
-	CheckOrigin: func(r *http.Request) bool {
-		return true }}).Upgrade(res, req, nil)*/
 
 	conn, err := utils.Upgraderdd.Upgrade(res, req, nil)
 	if err != nil {

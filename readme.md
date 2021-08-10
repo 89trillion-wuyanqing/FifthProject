@@ -6,32 +6,31 @@
 
 ```
 ├── app
-│   ├── main.go
-│   └── ws
+│   ├── main.go #程序入口
+│   └── ws #websoket服务
 │       └── wsServer.go
-├── config
+├── config #配置文件
 │   ├── app.ini
 │   └── serverLog.log
 ├── go.mod
-├── go.sum
 ├── internal
-│   ├── ctrl
+│   ├── ctrl #控制器层
 │   │   └── wsController.go
-│   ├── model
+│   ├── model #模型层
 │   │   ├── GeneralReward.pb.go
 │   │   └── GeneralReward.proto
-│   ├── router
+│   ├── router #路由层
 │   │   └── WsRouter.go
-│   ├── service
+│   ├── service #service层
 │   │   └── WsService.go
-│   ├── utils
+│   ├── utils #工具层
 │   │   ├── IniUtils.go
 │   │   ├── LogUtils.go
 │   │   └── WsUtils.go
-│   └── ws
+│   └── ws #WS层
 │       ├── client.go
 │       └── server.go
-├── locust
+├── locust #压力测试
 │   ├── LocustFile.py
 │   └── report_1628339791.0142221.html
 └── readme.md

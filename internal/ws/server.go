@@ -65,18 +65,6 @@ func (manager *ClientManager) Start() {
 			fmt.Println("广播")
 			log.Println("INFO：发送广播消息")
 			manager.send(message)
-			/*var generalMsg = &model.Msg{}
-			json.Unmarshal(message,generalMsg)
-			for conn := range manager.Clients {
-
-				select {
-				case conn.Send <- message:
-
-				default:
-					close(conn.Send)
-					delete(manager.Clients, conn)
-				}
-			}*/
 
 		}
 	}
